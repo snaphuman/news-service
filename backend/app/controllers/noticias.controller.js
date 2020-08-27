@@ -20,13 +20,12 @@ const getPagingData = (data, page, limit) => {
 exports.findAll = (req, res) => {
 
     const { page, size, name } = req.query;
-    console.log(name);
 
     var condition = name ? {name: {[Op.substring]: name}} : null;
 
     const { limit, offset } = getPagination(page, size);
 
-    Noticia.findAndCountAll({ where: condition, limit, offset })
+    Noticia.findAndCountAll({ where: condition, limit, offset, order: [["id", "DESC"]] })
         .then(data => {
             const response = getPagingData(data, page, limit);
             res.send(response);
