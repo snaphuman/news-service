@@ -7,7 +7,7 @@
         <small>{{ noticia.date }}</small>
       </div>
 
-      <p class="mb-1" v-html="noticia.content">
+      <p class="mb-1" :inner-html.prop="noticia.content | truncate(250)">
         {{ noticia.content }}
       </p>
 
