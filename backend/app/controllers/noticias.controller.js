@@ -2,9 +2,9 @@ const db = require("../models");
 const Noticia = db.noticias;
 const Op = db.Sequelize.Op;
 
-const getPagination = (page, size) => {
-    const limit = size ? +size : 10;
-    const offset = page ? page * limit : 0;
+const getPagination = (page, size, all) => {
+    const limit = size ? +size : all ? null : 10;
+    const offset = page ? page * limit : all ? null : 0;
 
     return { limit, offset };
 };
@@ -19,13 +19,13 @@ const getPagingData = (data, page, limit) => {
 
 exports.findAll = (req, res) => {
 
-    const { page, size, name } = req.query;
+    const { page, size, name, all } = req.query;
 
     var condition = name ? {name: {[Op.substring]: name}} : null;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = getPagination(page, size, all);
 
-    Noticia.findAndCountAll({ where: condition, limit, offset, order: [["id", "DESC"]] })
+    Noticia.findAndCountAll({ where: condition, limit: limit, offset: offset, order: [["id", "DESC"]] })
         .then(data => {
             const response = getPagingData(data, page, limit);
             res.send(response);
