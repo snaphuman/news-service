@@ -25,7 +25,12 @@ exports.findAll = (req, res) => {
 
     const { limit, offset } = getPagination(page, size, all);
 
-    Noticia.findAndCountAll({ where: condition, limit: limit, offset: offset, order: [["id", "DESC"]] })
+    Noticia.findAndCountAll({
+        where: condition,
+        limit: limit,
+        offset: offset,
+        order: [["id", "DESC"]]})
+
         .then(data => {
             const response = getPagingData(data, page, limit);
             res.send(response);

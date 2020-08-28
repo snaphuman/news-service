@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-form-input v-model="searchText" @change="doSearch()" debounce="500" type="search" placeholder="Ingrese texto de búsqueda"></b-form-input>
+  <b-form-input v-model="searchText" @change="getNoticias" debounce="500" type="search" placeholder="Ingrese texto de búsqueda"></b-form-input>
   <b-list-group>
     <b-list-group-item v-for="(noticia, index) in noticias" :key="index" v-bind:href="`${getContentURL(noticia.slug)}`" class="flex-column align-items-start">
       <div class="d-flex w-100 justify-content-between">
@@ -15,7 +15,7 @@
     </b-list-group-item>
   </b-list-group>
   <div class="overflow-auto">
-      <b-pagination-nav v-model="currentPage" :link-gen="linkGen" :number-of-pages="10" :no-page-detect="true"></b-pagination-nav>
+      <b-pagination-nav v-model="currentPage" :link-gen="getNoticias" :number-of-pages="totalPages" :no-page-detect="true"></b-pagination-nav>
   </div>
 </div>
 </template>
@@ -31,23 +31,16 @@ export default {
         return {
             noticias: [],
             searchText: '',
-            currentPage: 1
+            currentPage: 1,
+            totalPages: null
         }
     },
     methods: {
         getNoticias() {
-            NoticiasDataService.getAll()
+            NoticiasDataService.getAll(this.searchText, this.currentPage - 1)
                 .then(response => {
                     this.noticias = response.data.noticias;
-                })
-                .catch(e => {
-                    console.log(e);
-                });
-        },
-        async doSearch() {
-           return await NoticiasDataService.getByKeyword(this.searchText)
-                .then(response => {
-                    this.noticias = response.data.noticias;
+                    this.totalPages = response.data.totalPages;
                 })
                 .catch(e => {
                     console.log(e);
@@ -55,15 +48,6 @@ export default {
         },
         getContentURL(slug) {
             return "https://www.crcom.gov.co/es/noticia/"+slug;
-        },
-        linkGen() {
-            NoticiasDataService.setPage(this.currentPage - 1)
-                .then(response => {
-                    this.noticias = response.data.noticias;
-                })
-                .catch(e => {
-                    console.log(e);
-                });
         },
     },
     mounted() {
