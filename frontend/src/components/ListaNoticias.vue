@@ -1,6 +1,6 @@
 <template>
-<div>
-  <b-form-input v-model="searchText" @change="getNoticias" debounce="500" type="search" placeholder="Ingrese texto de búsqueda"></b-form-input>
+<b-col>
+  <b-form-input class="my-3" v-model="searchText" @change="getNoticias" debounce="500" type="search" placeholder="Ingrese texto de búsqueda"></b-form-input>
   <b-overlay :show="spinner" rounded="sm">
   <b-list-group>
     <b-list-group-item v-for="(noticia, index) in noticias" :key="index" v-bind:href="`${getContentURL(noticia.slug)}`" class="flex-column align-items-start">
@@ -16,10 +16,10 @@
     </b-list-group-item>
   </b-list-group>
   </b-overlay>
-  <div class="overflow-auto">
-      <b-pagination-nav v-model="currentPage" :link-gen="getNoticias" :number-of-pages="totalPages" :no-page-detect="true"></b-pagination-nav>
+  <div class="my-3 overflow-auto">
+      <b-pagination-nav v-model="currentPage" :link-gen="getNoticias" :number-of-pages="totalPages" :no-page-detect="true" align="fill"></b-pagination-nav>
   </div>
-</div>
+</b-col>
 </template>
 <script>
 import NoticiasDataService from '../services/NoticiasDataService';
