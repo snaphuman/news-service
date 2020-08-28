@@ -21,12 +21,17 @@
 </template>
 <script>
 import NoticiasDataService from '../services/NoticiasDataService';
-import { BListGroup, BListGroupItem, FormInputPlugin, BPaginationNav } from 'bootstrap-vue';
+import { BListGroup,
+         BListGroupItem,
+         BPaginationNav } from 'bootstrap-vue';
 
 
 export default {
     name: 'lista-noticias',
-    components: [ BListGroup, BListGroupItem, FormInputPlugin, BPaginationNav ],
+    components: {
+        BListGroup,
+        BListGroupItem,
+        BPaginationNav },
     data() {
         return {
             noticias: [],
