@@ -3,7 +3,7 @@
   <b-form-input class="my-3" v-model="searchText" @change="getNoticias" debounce="500" type="search" placeholder="Ingrese texto de búsqueda"></b-form-input>
   <b-overlay :show="spinner" rounded="sm">
   <b-list-group>
-    <b-list-group-item v-for="(noticia, index) in noticias" :key="index" v-bind:href="`${getContentURL(noticia.slug)}`" class="flex-column align-items-start">
+    <b-list-group-item v-for="(noticia, index) in noticias" :key="index" target="_parent" v-bind:href="`${getContentURL(noticia.slug)}`" class="flex-column align-items-start">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">{{ noticia.name }}</h5>
         <small>{{ noticia.date }}</small>
