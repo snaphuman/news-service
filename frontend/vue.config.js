@@ -1,4 +1,4 @@
-module.exports = {
-  publicPath: '/news-service'
-}
+//module.exports = {
+//  publicPath: '/news-service/'
+//}
 
