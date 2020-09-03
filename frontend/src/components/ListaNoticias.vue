@@ -42,7 +42,8 @@ export default {
             searchText: '',
             currentPage: 1,
             totalPages: null,
-            spinner: false
+            spinner: false,
+            runningInFrame: window.parent !== window
         }
     },
     methods: {
@@ -53,6 +54,9 @@ export default {
                     this.noticias = response.data.noticias;
                     this.totalPages = response.data.totalPages;
                     this.spinner = false;
+
+                    if (this.runningInFrame)
+                        window.parent.postMessage(this.calculateHeight().toString(), '*');
                 })
                 .catch(e => {
                     console.log(e);
@@ -60,6 +64,9 @@ export default {
         },
         getContentURL(slug) {
             return "https://www.crcom.gov.co/es/noticia/"+slug;
+        },
+        calculateHeight() {
+            return document.getElementById("app").clientHeight;
         },
     },
     mounted() {
